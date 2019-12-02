@@ -40,4 +40,8 @@
     <script src="{{ PagSeguro::getUrl()['javascript'] }}"></script>
     <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+
+    <script>
+        PagSeguroDirectPayment.setSessionId('{{ PagSeguro::startSession() }}');
+    </script>
 </html>

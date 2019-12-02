@@ -36,7 +36,12 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="numeroCartao">Número do Cartão</label>
-                <input type="text" class="form-control numeroCartao" id="numeroCartao" name="numeroCartao" value="4111111111111111">
+                <div class="input-group">
+                    <input type="text" class="form-control numeroCartao" id="numeroCartao" name="numeroCartao" value="4111111111111111">
+                    <div id="paymentFlags" class="input-group-append">
+                        <span id="flagIcon" class="input-group-text bg-transparent"></span>
+                    </div>
+                </div>
             </div>
             <div class="form-group col-md-4">
                 <label for="validadeCartao">Validade</label>
@@ -47,6 +52,15 @@
                 <input type="text" class="form-control cvvCartao" id="cvv" name="cvv" value="123">
             </div>
         </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <select class="form-control" name="installmentQuantity" id="installmentQuantity" class="browser-default">
+                    <option disabled selected>Parcelamento</option>
+                </select>
+            </div>
+        </div>
+
+
         <button type="button" onclick="getValidade()" class="btn btn-primary">Gerar</button>
     </form>
 </div>
