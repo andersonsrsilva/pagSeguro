@@ -6,6 +6,7 @@
         @csrf
         <input type="hidden" id="senderHashCredito" name="senderHashCredito">
         <input type="hidden" id="creditCardToken" name="creditCardToken">
+        <input type="hidden" id="installmentValue" name="installmentValue">
 
         <div class="form-row">
             <div class="form-group col-md-12">
@@ -61,6 +62,6 @@
         </div>
 
 
-        <button type="button" onclick="getValidade()" class="btn btn-primary">Gerar</button>
+        <button type="button" onclick="getSenderHash()" class="btn btn-primary">Gerar</button>
     </form>
 </div>

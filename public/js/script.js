@@ -11,6 +11,14 @@ $(document).ready(function () {
     var brand = '';
     var amount = 500.00;
 
+    //FALTA
+    $('#installmentQuantity').on('change', function () {
+        let value = response[$('#installmentQuantity').val() - 1].installmentAmount;
+        alert(value);
+        $('#installmentValue').val(value);
+    });
+
+
     $('#numeroCartao').on('keyup', function() {
         let number = trim($(this).val());
 
@@ -41,45 +49,37 @@ $(document).ready(function () {
 
                     $('#installmentQuantity').html(html);
                     $('#installmentValue').val(response[0].installmentAmount);
-                    $('#installmentQuantity').on('change', function () {
-                        let value = response[$('#installmentQuantity').val() - 1].installmentAmount;
-                        $('#installmentValue').val(value);
-                    });
-
-
                 },
                 error: function(response) {
                     console.log(response);
                 }
             });
+
+            PagSeguroDirectPayment.createCardToken({
+                cardNumber: trim($("#numeroCartao").val()),
+                brand: brand,
+                cvv: $("#cvv").val(),
+                expirationMonth: $("#validadeCartao").val().substring(0, 2),
+                expirationYear: $("#validadeCartao").val().substring(3, 8),
+                success: function (response) {
+                    var objToken = response;
+                    var TOKEN = objToken["card"].token;
+                    $("#creditCardToken").val(TOKEN);
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+
         }
     });
+
 });
 
 function getSenderHash() {
     $("#senderHashBoleto").val(PagSeguroDirectPayment.getSenderHash());
     $("#senderHashDebito").val(PagSeguroDirectPayment.getSenderHash());
     $("#senderHashCredito").val(PagSeguroDirectPayment.getSenderHash());
-}
-
-function getValidade() {
-    var param = {
-        cardNumber: trim($("#numeroCartao").val()),
-        cvv: $("#cvv").val(),
-        brand: 'visa',
-        expirationMonth: $("#validadeCartao").val().substring(0, 2),
-        expirationYear: $("#validadeCartao").val().substring(3, 8),
-        success: function (response) {
-            console.log(response);
-        },
-        error: function (response) {
-            console.log(response);
-        },
-        complete: function (response) {
-            console.log(response);
-        },
-    }
-    PagSeguroDirectPayment.createCardToken(param);
 }
 
 function trim(str) {
@@ -89,15 +89,4 @@ function trim(str) {
     return str;
 }
 
-PagSeguroDirectPayment.createCardToken({
-    cardNumber: trim($("#numeroCartao").val()),
-    brand: '411111',
-    cvv: $("#cvv").val(),
-    expirationMonth: $("#validadeCartao").val().substring(0, 2),
-    expirationYear: $("#validadeCartao").val().substring(3, 8),
-    success: function (response) {
-        var objToken = response;
-        var TOKEN = objToken["card"].token;
-        $("#creditCardToken").val(TOKEN);
-    }
-});
+
