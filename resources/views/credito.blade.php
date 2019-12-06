@@ -1,7 +1,7 @@
 <div class="mt-4">
     <h2>Crédito</h2>
 
-    <form method="POST" action="/pagamento/credito">
+    <form method="POST" action="/pagamento/credito" id="creditoForm">
 
         @csrf
         <input type="hidden" id="senderHashCredito" name="senderHashCredito">
@@ -11,7 +11,7 @@
         <div class="form-row">
             <div class="form-group col-md-12">
                 <label for="nome">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="Anderson Santa Rosa da Silva">
+                <input type="text" class="form-control" id="nomeCredito" name="nomeCredito" value="Anderson Santa Rosa da Silva">
             </div>
         </div>
         <div class="form-row">
@@ -61,7 +61,11 @@
             </div>
         </div>
 
+        <button type="submit" class="btn btn-primary">Comprar</button>
 
-        <button type="button" onclick="getSenderHash()" class="btn btn-primary">Gerar</button>
+        <br><br>
+
+        <div id="payment_methods" class="center-align"></div>
+
     </form>
 </div>

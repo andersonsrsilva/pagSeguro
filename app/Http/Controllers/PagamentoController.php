@@ -106,20 +106,22 @@ class PagamentoController extends Controller
 
     public function credito(Request $request)
     {
+        $cpf = str_replace(['.', '-'], '', $request->input('cpf')); 
+        
         try {
             $credito = PagSeguro::setReference('1')
                 ->setSenderInfo([
-                    'senderName' => $request->input('nome'),
+                    'senderName' => $request->input('nomeCredito'),
                     'senderPhone' => $request->input('telefone'),
                     'senderEmail' => $request->input('email'),
                     'senderHash' => $request->input('senderHashCredito'),
-                    'senderCPF' => $request->input('cpf'),
+                    'senderCPF' => $cpf,
                     'senderCNPJ' => null
                 ])
                 ->setCreditCardHolder([
                     'creditCardHolderName' => $request->input('nome'), //OPCIONAL
                     'creditCardHolderPhone' => $request->input('telefone'), //OPCIONAL
-                    'creditCardHolderCPF' => $request->input('cpf'), //OPCIONAL
+                    'creditCardHolderCPF' => $cpf, //OPCIONAL
                     'creditCardHolderBirthDate' => $request->input('dataNascimento'),
                 ])
                 ->setShippingAddress([ //OPCIONAL
@@ -141,25 +143,18 @@ class PagamentoController extends Controller
                 ])
                 ->setItems([
                     [
-                        'itemId' => 'ID',
-                        'itemDescription' => 'Nome do Item',
-                        'itemAmount' => 12.14, //Valor unitário
-                        'itemQuantity' => '2', //Quantidade de itens
+                        'itemId' => '123456',
+                        'itemDescription' => 'Item Certificado',
+                        'itemAmount' => 199.00, 
+                        'itemQuantity' => '1'
                     ],
-                    [
-                        'itemId' => 'ID 2',
-                        'itemDescription' => 'Nome do Item 2',
-                        'itemAmount' => 12.14,
-                        'itemQuantity' => '2',
-                    ]
+                ])
+                ->send([
+                    'paymentMethod' => 'creditCard',
+                    'creditCardToken' => $request->input('creditCardToken'),
+                    'installmentQuantity' => $request->input('installmentQuantity'),
+                    'installmentValue' => $request->input('installmentValue'),
                 ]);
-            dd($credito);
-            //->send([
-            //    'paymentMethod' => 'creditCard',
-            //    'creditCardToken' => 'Vem do Javascript',
-            //    'installmentQuantity' => '2',
-            //    'installmentValue' => 50.20,
-            //]);
 
             dd($credito);
         } catch (PagSeguroException $e) {
@@ -167,5 +162,10 @@ class PagamentoController extends Controller
             //$e->getCode();
             //$e->getMessage();
         }
+    }
+
+    private function trim($str) {
+        $stripped = str_replace(' ', '', $str);
+        dd($str);
     }
 }
