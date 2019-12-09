@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PagSeguro;
+use Helper;
 use Artistas\PagSeguro\PagSeguroException;
 use Illuminate\Http\Request;
 
@@ -106,7 +107,9 @@ class PagamentoController extends Controller
 
     public function credito(Request $request)
     {
-        $cpf = str_replace(['.', '-'], '', $request->input('cpf')); 
+        $cpf = Helper::cpf($request->input('cpf')); 
+
+        dd($cpf);
         
         try {
             $credito = PagSeguro::setReference('1')
